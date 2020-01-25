@@ -1,0 +1,24 @@
+# coding: utf-8
+require 'nokogiri'
+
+def parse(file)
+  doc = Nokogiri::HTML(open(file))
+  puts doc.title
+end
+
+def get_file_list(target, parsed)
+  puts target
+  Dir::foreach(target).each {|file|
+    next if file == "." or file == ".."
+    parse(target + "/" + file)
+    move_file(target + "/" + file, parsed + "/" + file)
+  }
+end
+
+def move_file(from, to)
+  puts from
+  puts to
+  File.rename(from, to)
+end
+
+get_file_list("file", "parsed")
